@@ -3,41 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Cuenta;
+use App\Models\Cliente;
+use App\Models\Empleado;
+use App\Models\Movimiento;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pasaje::with([
-            'ruta',
-            'unidad.conductor',
-            'tipoPasaje',
-            'horario'
-        ]);
+        $cuentas = Cuenta::query();
+        $movimientos = Movimiento::query();
 
-
-        if ($request->filled('ruta_id')) {
-            $query->where('ruta_id', $request->ruta_id);
-        }
-
-        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
-            $query->whereBetween('fecha_inicio', [
-                $request->fecha_inicio,
-                $request->fecha_fin
-            ]);
+        if ($request->filled('cuenta')) {
+            $movimientos->where('chr_cuencodigo', $request->cuenta);
         }
 
         return view('dashboard', [
-            'rutas'       => Ruta::all(),
-            'unidades'    => Unidad::all(),
-            'conductores' => Conductor::all(),
-            'tipos'       => TipoPasaje::all(),
-            'horarios'    => Horario::all(),
-            'pasajes'     => $query->get(),
-            
-            'pasajes'     => $query->paginate(10)->withQueryString()
+            'totalClientes' => cliente::count(),
+            'totalCuentas'  => cuenta::count(),
+            'totalEmpleados'=> empleado::count(),
+            'movimientos'   => $movimientos->paginate(10)->withQueryString()
         ]);
-        
     }
 }
