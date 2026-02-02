@@ -12,7 +12,7 @@ class CuentaController extends Controller
 {
     public function index()
     {
-        return view('cuentas', [
+        return view('cuenta', [
             'cuentas' => Cuenta::all()
         ]);
     }

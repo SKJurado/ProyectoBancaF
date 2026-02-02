@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CostoMovimiento extends Model
 {
-    //
+        protected $table = 'interesmensual';
+    protected $primaryKey = 'chr_monecodigo';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'chr_monecodigo',
+        'dec_inteimporte'
+    ];
 }
